@@ -1,11 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(AudioSource))]
 public class FireController : MonoBehaviour
 {
     public GameObject m_bullet;
     public Transform m_firePos;
     public MeshRenderer m_muzzleFlash;
+    public AudioClip m_fireSfx;
+
+    AudioSource m_audioSource;
+
+    void Awake()
+    {
+        m_audioSource = gameObject.GetComponent<AudioSource>();
+    }
 
 	// Use this for initialization
 	void Start ()
@@ -28,6 +37,7 @@ public class FireController : MonoBehaviour
     void Fire()
     {
         CreateBullet();
+        PlaySound();
     }
 
     void CreateBullet()
@@ -59,5 +69,16 @@ public class FireController : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(0.05f, 0.3f));
 
         m_muzzleFlash.enabled = false;
+    }
+
+    void PlaySound()
+    {
+        if (m_audioSource == null)
+            return;
+
+        if (m_fireSfx == null)
+            return;
+
+        m_audioSource.PlayOneShot(m_fireSfx);
     }
 }
