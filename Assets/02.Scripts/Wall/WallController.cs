@@ -3,6 +3,8 @@ using System.Collections;
 
 public class WallController : MonoBehaviour {
 
+    public GameObject m_sparkEffect;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -19,7 +21,10 @@ public class WallController : MonoBehaviour {
     {
         if (collision.collider.tag == "Bullet")
         {
+            GameObject spark = Instantiate(m_sparkEffect, collision.transform.position, Quaternion.identity) as GameObject;
+
             Destroy(collision.gameObject);
+            Destroy(spark, 0.5f);
         }
     }
 }
