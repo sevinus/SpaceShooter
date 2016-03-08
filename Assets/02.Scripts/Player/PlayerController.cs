@@ -28,14 +28,16 @@ public class PlayerController : MonoBehaviour
     public float m_moveSpeed = 10.0f;
     public float m_rotateSpeed = 100.0f;
     public Anim m_anim;
+    public int m_hp;
 
     private Transform m_cahcedTransform;
-    private Animation m_animation;
+    private Animation m_animation;    
 
     void Awake()
     {
         m_cahcedTransform = gameObject.GetComponent<Transform>();
         m_animation = gameObject.GetComponentInChildren<Animation>();
+        m_hp = 100;
     }
 
 	// Use this for initialization
@@ -100,5 +102,24 @@ public class PlayerController : MonoBehaviour
         {
             m_animation.CrossFade(m_anim.m_idle.name, 0.3f);
         }
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        if (collider.tag == "Punch")
+        {
+            m_hp -= 10;
+
+            if (m_hp <= 0)
+            {
+                PlayerDie();
+                m_hp = 0;
+            }
+        }
+    }
+
+    void PlayerDie()
+    {
+        Debug.Log("Player Die.");
     }
 }
