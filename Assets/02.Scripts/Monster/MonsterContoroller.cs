@@ -14,6 +14,8 @@ public class MonsterContoroller : MonoBehaviour {
     public float m_traceDist = 10.0f;
     public float m_attackDist = 2.0f;
     public MonsterState m_monsterState = MonsterState.idle;
+    public GameObject m_bloodEffect;
+    public GameObject bloodDecal;
 
     Transform m_monsterTransform;
     Transform m_playerTransform;
@@ -48,9 +50,20 @@ public class MonsterContoroller : MonoBehaviour {
     {
         if (collision.transform.tag == "Bullet")
         {
+            CreateBloodEffect(collision.transform.position);
+
             Destroy(collision.gameObject);
-            m_animator.SetTrigger("IsHit");
+            m_animator.SetTrigger("IsHit");            
         }
+    }
+
+    void CreateBloodEffect(Vector3 position)
+    {
+        if (m_bloodEffect == null)
+            return;
+
+        GameObject bloodEffect = GameObject.Instantiate(m_bloodEffect, position, Quaternion.identity) as GameObject;
+        Destroy(bloodEffect, 2.0f);
     }
 
     IEnumerator CheckMonsterState()
