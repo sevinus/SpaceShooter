@@ -6,7 +6,7 @@ public class BulletController : MonoBehaviour
     Rigidbody m_cachedRigidbody;
     Transform m_cachedTransform;
 
-    int m_damage = 20;
+    public int m_damage = 20;
     float m_speed = 1000.0f;
     Vector3 m_startPos;
 

@@ -22,6 +22,7 @@ public class MonsterContoroller : MonoBehaviour {
     NavMeshAgent m_naviMeshAgent;
     Animator m_animator;
     bool m_isDie = false;
+    int m_hp = 100;
 
     void Awake()
     {
@@ -46,10 +47,28 @@ public class MonsterContoroller : MonoBehaviour {
         
     }
 
+    void OnEnable()
+    {
+        PlayerController.OnPlayerDie += OnPlayerDie;
+    }
+
+    void OnDisable()
+    {
+        PlayerController.OnPlayerDie -= OnPlayerDie;
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.tag == "Bullet")
         {
+            var contoller = collision.gameObject.GetComponent<BulletController>();
+            m_hp -= contoller.m_damage;
+
+            if (m_hp <= 0)
+            {
+                MonsterDie();
+            }
+
             CreateBloodEffect(collision.transform.position);
 
             Destroy(collision.gameObject);
@@ -74,6 +93,27 @@ public class MonsterContoroller : MonoBehaviour {
         Destroy(bloodDecal, 5.0f);
     }
 
+    void MonsterDie()
+    {
+        StopAllCoroutines();
+
+        m_isDie = true;
+        m_monsterState = MonsterState.die;
+        m_naviMeshAgent.Stop();
+        m_animator.SetTrigger("IsMonsterDie");
+
+        Collider[] colliderList = gameObject.GetComponentsInChildren<Collider>();
+        for (int i = 0; i < colliderList.Length; ++i)
+        {
+            colliderList[i].enabled = false;
+        }
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        Debug.Log(collider.gameObject.tag);
+    }
+
     IEnumerator CheckMonsterState()
     {
         while (m_isDie == false)
@@ -95,6 +135,13 @@ public class MonsterContoroller : MonoBehaviour {
                 m_monsterState = MonsterState.idle;
             }
         }
+    }
+
+    void OnPlayerDie()
+    {
+        StopAllCoroutines();
+        m_naviMeshAgent.Stop();
+        m_animator.SetTrigger("IsPlayerDie");
     }
 
     IEnumerator MonsterAction()

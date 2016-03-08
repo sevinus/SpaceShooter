@@ -25,6 +25,9 @@ public class Anim
 
 public class PlayerController : MonoBehaviour
 {
+    public delegate void PlayerDieHandler();
+    public static event PlayerDieHandler OnPlayerDie;
+
     public float m_moveSpeed = 10.0f;
     public float m_rotateSpeed = 100.0f;
     public Anim m_anim;
@@ -121,5 +124,14 @@ public class PlayerController : MonoBehaviour
     void PlayerDie()
     {
         Debug.Log("Player Die.");
+
+        OnPlayerDie();
+
+        //GameObject[] monsterList = GameObject.FindGameObjectsWithTag("Monster");
+
+        //for (int i = 0; i < monsterList.Length; ++i)
+        //{
+        //    monsterList[i].SendMessage("OnPlayerDie", SendMessageOptions.DontRequireReceiver);
+        //}
     }
 }
