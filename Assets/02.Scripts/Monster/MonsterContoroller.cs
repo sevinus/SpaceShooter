@@ -15,7 +15,7 @@ public class MonsterContoroller : MonoBehaviour {
     public float m_attackDist = 2.0f;
     public MonsterState m_monsterState = MonsterState.idle;
     public GameObject m_bloodEffect;
-    public GameObject bloodDecal;
+    public GameObject m_bloodDecal;
 
     Transform m_monsterTransform;
     Transform m_playerTransform;
@@ -64,6 +64,14 @@ public class MonsterContoroller : MonoBehaviour {
 
         GameObject bloodEffect = GameObject.Instantiate(m_bloodEffect, position, Quaternion.identity) as GameObject;
         Destroy(bloodEffect, 2.0f);
+
+        Vector3 decalPos = m_monsterTransform.position + (Vector3.up * 0.05f);
+        Quaternion decalRotate = Quaternion.Euler(90.0f, 0.0f, Random.Range(0, 360));
+
+        GameObject bloodDecal = GameObject.Instantiate(m_bloodDecal, decalPos, decalRotate) as GameObject;
+        float scale = Random.Range(1.0f, 3.0f);
+        bloodDecal.transform.localScale *= scale;
+        Destroy(bloodDecal, 5.0f);
     }
 
     IEnumerator CheckMonsterState()
