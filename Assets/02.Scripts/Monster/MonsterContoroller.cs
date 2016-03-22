@@ -21,6 +21,7 @@ public class MonsterContoroller : MonoBehaviour {
     Transform m_playerTransform;
     NavMeshAgent m_naviMeshAgent;
     Animator m_animator;
+    GameUI m_gameUI;
     bool m_isDie = false;
     int m_hp = 100;
 
@@ -30,6 +31,7 @@ public class MonsterContoroller : MonoBehaviour {
         m_playerTransform = GameObject.FindWithTag("Player").GetComponent<Transform>();
         m_naviMeshAgent = gameObject.GetComponent<NavMeshAgent>();
         m_animator = gameObject.GetComponent<Animator>();
+        m_gameUI = GameObject.Find("GameUI").GetComponent<GameUI>();
 
         //m_naviMeshAgent.destination = m_playerTransform.position;
     }
@@ -95,6 +97,9 @@ public class MonsterContoroller : MonoBehaviour {
 
     void MonsterDie()
     {
+        if (m_gameUI == null)
+            return;
+
         StopAllCoroutines();
 
         m_isDie = true;
@@ -107,6 +112,8 @@ public class MonsterContoroller : MonoBehaviour {
         {
             colliderList[i].enabled = false;
         }
+
+        m_gameUI.AddScore(50);
     }
 
     void OnTriggerEnter(Collider collider)

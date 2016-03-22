@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 [System.Serializable]
@@ -32,15 +33,18 @@ public class PlayerController : MonoBehaviour
     public float m_rotateSpeed = 100.0f;
     public Anim m_anim;
     public int m_hp;
+    public Image m_hpBarImage;
 
     private Transform m_cahcedTransform;
-    private Animation m_animation;    
+    private Animation m_animation;
+    private int m_startHp;    
 
     void Awake()
     {
         m_cahcedTransform = gameObject.GetComponent<Transform>();
         m_animation = gameObject.GetComponentInChildren<Animation>();
         m_hp = 100;
+        m_startHp = m_hp;
     }
 
 	// Use this for initialization
@@ -109,9 +113,13 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
+        if (m_hpBarImage == null)
+            return;
+
         if (collider.tag == "Punch")
         {
             m_hp -= 10;
+            m_hpBarImage.fillAmount = (float)m_hp / m_startHp;
 
             if (m_hp <= 0)
             {
