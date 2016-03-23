@@ -28,15 +28,38 @@ public class FireController : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+        Debug.DrawRay(m_firePos.position, m_firePos.forward * 10.0f, Color.green);
+
         if (Input.GetMouseButtonDown(0))
         {
             Fire();
+
+            RaycastHit hit;
+            if (Physics.Raycast(m_firePos.position, m_firePos.forward, out hit, 10.0f))
+            {
+                if (hit.collider.tag == "Monster")
+                {
+                    object[] _params = new object[2];
+                    _params[0] = hit.point;
+                    _params[1] = 20;
+
+                    hit.collider.gameObject.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
+                }
+                else if (hit.collider.tag == "Barrel")
+                {
+                    object[] _params = new object[2];
+                    _params[0] = m_firePos.position;
+                    _params[1] = hit.point;
+
+                    hit.collider.gameObject.SendMessage("OnDamage", _params, SendMessageOptions.DontRequireReceiver);
+                }
+            }
         }
 	}
 
     void Fire()
     {
-        CreateBullet();
+        //CreateBullet();
         PlaySound();
     }
 

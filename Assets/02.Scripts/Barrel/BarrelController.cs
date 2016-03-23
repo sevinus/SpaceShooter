@@ -12,8 +12,7 @@ public class BarrelController : MonoBehaviour {
 
     void Awake()
     {
-        m_hitCount = 0;
-
+        m_hitCount = 0;        
         m_cachedTransform = gameObject.transform;
     }
 
@@ -26,8 +25,8 @@ public class BarrelController : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
-	
+	void Update ()
+    {        
 	}
     
     void OnCollisionEnter(Collision collision)
@@ -71,6 +70,23 @@ public class BarrelController : MonoBehaviour {
 
             rigidbody.mass = 1.0f;
             rigidbody.AddExplosionForce(1000.0f, m_cachedTransform.position, 10.0f, 300.0f);
+        }
+    }
+
+    void OnDamage(object[] _params)
+    {
+        Vector3 firePos = (Vector3)_params[0];
+        Vector3 hitPos = (Vector3)_params[1];
+
+        Vector3 incomeVector = hitPos - firePos;
+        incomeVector.Normalize();
+
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        rigidbody.AddForceAtPosition(incomeVector * 1000.0f, hitPos);
+        
+        if (++m_hitCount >= 3)
+        {
+            ExplosionBarrel();
         }
     }
 }

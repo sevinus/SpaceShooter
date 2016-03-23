@@ -59,23 +59,41 @@ public class MonsterContoroller : MonoBehaviour {
         PlayerController.OnPlayerDie -= OnPlayerDie;
     }
 
-    void OnCollisionEnter(Collision collision)
+    //void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.transform.tag == "Bullet")
+    //    {
+    //        var contoller = collision.gameObject.GetComponent<BulletController>();
+    //        m_hp -= contoller.m_damage;
+
+    //        if (m_hp <= 0)
+    //        {
+    //            MonsterDie();
+    //        }
+
+    //        CreateBloodEffect(collision.transform.position);
+
+    //        Destroy(collision.gameObject);
+    //        m_animator.SetTrigger("IsHit");
+    //    }
+    //}
+
+    void OnDamage(object[] _params)
     {
-        if (collision.transform.tag == "Bullet")
+        Debug.Log(string.Format("Hit ray {0} : {1}", _params[0], _params[1]));
+
+        Vector3 hitPosition = (Vector3)_params[0];
+        int damage = (int)_params[1];
+
+        m_hp -= damage;
+
+        if (m_hp <= 0)
         {
-            var contoller = collision.gameObject.GetComponent<BulletController>();
-            m_hp -= contoller.m_damage;
-
-            if (m_hp <= 0)
-            {
-                MonsterDie();
-            }
-
-            CreateBloodEffect(collision.transform.position);
-
-            Destroy(collision.gameObject);
-            m_animator.SetTrigger("IsHit");            
+            MonsterDie();
         }
+
+        CreateBloodEffect(hitPosition);        
+        m_animator.SetTrigger("IsHit");
     }
 
     void CreateBloodEffect(Vector3 position)
