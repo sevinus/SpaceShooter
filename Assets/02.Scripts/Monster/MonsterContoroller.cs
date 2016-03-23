@@ -17,13 +17,13 @@ public class MonsterContoroller : MonoBehaviour {
     public GameObject m_bloodEffect;
     public GameObject m_bloodDecal;
 
-    Transform m_monsterTransform;
-    Transform m_playerTransform;
-    NavMeshAgent m_naviMeshAgent;
-    Animator m_animator;
-    GameUI m_gameUI;
-    bool m_isDie = false;
-    int m_hp = 100;
+    private Transform m_monsterTransform;
+    private Transform m_playerTransform;
+    private NavMeshAgent m_naviMeshAgent;
+    private Animator m_animator;
+    private GameUI m_gameUI;
+    private bool m_isDie = false;
+    private int m_hp = 100;
 
     void Awake()
     {
@@ -99,6 +99,8 @@ public class MonsterContoroller : MonoBehaviour {
     {
         if (m_gameUI == null)
             return;
+
+        gameObject.tag = "Untagged";
 
         StopAllCoroutines();
 

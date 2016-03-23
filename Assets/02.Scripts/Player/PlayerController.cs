@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     public Anim m_anim;
     public int m_hp;
     public Image m_hpBarImage;
-
+    
     private Transform m_cahcedTransform;
     private Animation m_animation;
     private int m_startHp;    
@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDir = (Vector3.right * xAxis) + (Vector3.forward * yAxis);
         m_cahcedTransform.Translate(moveDir.normalized * m_moveSpeed * Time.deltaTime, Space.Self);
 
-        float rotate = m_rotateSpeed * mouseX;
+        float rotate = m_rotateSpeed * mouseX * 2.0f;
         m_cahcedTransform.Rotate(Vector3.up * rotate * Time.deltaTime, Space.Self);
     }
 
@@ -134,6 +134,8 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Player Die.");
 
         OnPlayerDie();
+
+        GameManager.instance.m_isGameOver = true;
 
         //GameObject[] monsterList = GameObject.FindGameObjectsWithTag("Monster");
 
