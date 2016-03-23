@@ -38,20 +38,20 @@ public class MonsterContoroller : MonoBehaviour {
 
 	// Use this for initialization
 	void Start ()
-    {
-        StartCoroutine(CheckMonsterState());
-        StartCoroutine(MonsterAction());
+    {        
 	}
-	
+    	
 	// Update is called once per frame
 	void Update ()
-    {
-        
+    {        
     }
 
     void OnEnable()
     {
         PlayerController.OnPlayerDie += OnPlayerDie;
+
+        StartCoroutine(CheckMonsterState());
+        StartCoroutine(MonsterAction());
     }
 
     void OnDisable()
@@ -99,9 +99,7 @@ public class MonsterContoroller : MonoBehaviour {
     {
         if (m_gameUI == null)
             return;
-
-        gameObject.tag = "Untagged";
-
+        
         StopAllCoroutines();
 
         m_isDie = true;
@@ -116,6 +114,24 @@ public class MonsterContoroller : MonoBehaviour {
         }
 
         m_gameUI.AddScore(50);
+
+        StartCoroutine(PushObjectPool());
+    }
+
+    IEnumerator PushObjectPool()
+    {
+        yield return new WaitForSeconds(3.0f);
+
+        Collider[] colliderList = gameObject.GetComponentsInChildren<Collider>();
+        for (int i = 0; i < colliderList.Length; ++i)
+        {
+            colliderList[i].enabled = true;
+        }
+
+        m_isDie = false;
+        m_hp = 100;
+        m_monsterState = MonsterState.idle;
+        gameObject.SetActive(false);
     }
 
     void OnTriggerEnter(Collider collider)
@@ -150,7 +166,11 @@ public class MonsterContoroller : MonoBehaviour {
     {
         StopAllCoroutines();
         m_naviMeshAgent.Stop();
-        m_animator.SetTrigger("IsPlayerDie");
+
+        if (m_isDie == false)
+        {
+            m_animator.SetTrigger("IsPlayerDie");
+        }
     }
 
     IEnumerator MonsterAction()

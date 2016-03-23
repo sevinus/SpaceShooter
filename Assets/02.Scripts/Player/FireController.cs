@@ -79,6 +79,7 @@ public class FireController : MonoBehaviour
         if (m_fireSfx == null)
             return;
 
-        m_audioSource.PlayOneShot(m_fireSfx);
+        GameManager.instance.PlaySfx(m_firePos.position, m_fireSfx);
+        //m_audioSource.PlayOneShot(m_fireSfx);
     }
 }
