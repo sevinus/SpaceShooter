@@ -58,12 +58,6 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
@@ -77,9 +71,13 @@
   <ItemGroup>
     <Compile Include="Assets\02.Scripts\Barrel\BarrelController.cs" />
     <Compile Include="Assets\02.Scripts\Bullet\BulletController.cs" />
+    <Compile Include="Assets\02.Scripts\Bullet\LaserBeam.cs" />
     <Compile Include="Assets\02.Scripts\Camera\FlollowCamera.cs" />
     <Compile Include="Assets\02.Scripts\Camera\ThirdPersonCamera.cs" />
+    <Compile Include="Assets\02.Scripts\GameUI\GameUI.cs" />
     <Compile Include="Assets\02.Scripts\Gizmo\MyGizmo.cs" />
+    <Compile Include="Assets\02.Scripts\Manager\GameManager.cs" />
+    <Compile Include="Assets\02.Scripts\Monster\MonsterContoroller.cs" />
     <Compile Include="Assets\02.Scripts\Player\FireController.cs" />
     <Compile Include="Assets\02.Scripts\Player\PlayerController.cs" />
     <Compile Include="Assets\02.Scripts\Wall\WallController.cs" />
